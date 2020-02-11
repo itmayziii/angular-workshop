@@ -1,0 +1,33 @@
+:host {
+  min-width: 200px;
+}
+
+.sidebar {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  height: 100%;
+  padding: 10px;
+}
+
+.channels {
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.channel {
+  margin-top: .5rem;
+}
+
+.display-name {
+  border-bottom: solid 1px white;
+}
+
+.new-channel-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+}
+.new-channel-form button {
+  margin-top: .5rem;
+}

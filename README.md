@@ -18,5 +18,4 @@ There are 2 exercises located in the [projects directory](/projects) with the na
 give the exercise a shot yourself before looking at a solution.
 
 Each exercise directory is it's own standalone Angular project and you can start a dev environment for each one
-by running `ng serve --project exercise-v00-begin` or `ng serve --project exercise-v01-begin`. The final version of
-the project is called `final` and can be ran similarly via `ng serve --project final`. 
+by running `ng serve --project exercise-v00-begin` or `ng serve --project exercise-v01-begin`.

@@ -5,17 +5,12 @@
   border-radius: 10px;
   box-shadow: 0 0.4px 0.6px rgba(0, 0, 0, 0.141), 0 1px 1.3px rgba(0, 0, 0, 0.202), 0 1.9px 2.5px rgba(0, 0, 0, 0.25), 0 3.4px 4.5px rgba(0, 0, 0, 0.298), 0 6.3px 8.4px rgba(0, 0, 0, 0.359), 0 15px 20px rgba(0, 0, 0, 0.5);
   max-width: 450px;
-  margin: 0 auto;
+  margin: 1rem auto;
 }
-.login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.login-form h1 {
+.login-shell h1 {
   margin: 0 0 0 0;
   padding: 12px 0;
-  font-size: 2.5em;
+  font-size: 2.5rem;
 }
 .form-field {
   position: relative;
