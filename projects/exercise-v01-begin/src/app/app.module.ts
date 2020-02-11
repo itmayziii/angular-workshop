@@ -13,6 +13,8 @@ import { UserService } from './services/user.service';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { ChannelService } from './services/channel.service';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,13 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFireAuthModule,
-    AngularFireFunctionsModule
+    AngularFireFunctionsModule,
+    AngularFirestoreModule
   ],
   providers: [
     ScreenTrackingService,
-    UserService
+    UserService,
+    ChannelService
   ],
   bootstrap: [
     AppComponent

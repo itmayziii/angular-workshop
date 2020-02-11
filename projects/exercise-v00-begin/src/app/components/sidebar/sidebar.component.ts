@@ -6,7 +6,6 @@ import * as firebase from 'firebase';
   template: `
     <aside>
       <nav>
-        {{user?.displayName}}
         Sidebar
       </nav>
     </aside>
@@ -14,5 +13,4 @@ import * as firebase from 'firebase';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  @Input() user: firebase.User | undefined;
 }

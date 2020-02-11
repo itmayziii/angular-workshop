@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
-import { Observable } from 'rxjs';
-import { UserService } from '../services/user.service';
+import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { isPotentialUser, UserService } from '../services/user.service';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,28 @@ export class IsAuthenticatedGuard implements CanActivateChild {
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.userService.checkIfLoginFinished()
-      .then(() => {
-        if (!this.userService.user) {
-          return this.router.createUrlTree(['login']);
-        }
+    let currentUserSubscription: Subscription;
+    return new Promise<boolean | UrlTree>((resolve, reject) => {
+      currentUserSubscription = this.userService.currentUserSubject
+        .pipe(
+          filter(isPotentialUser)
+        )
+        .subscribe(
+          (currentUser) => {
+            if (currentUser === null) {
+              return resolve(this.router.createUrlTree(['login']));
+            }
 
-        return true;
-      }).catch((error) => {
-        console.warn(error);
-        return this.router.createUrlTree(['login']);
-      });
+            return resolve(true);
+          },
+          (error) => {
+            console.warn(error);
+            reject(error);
+          }
+        );
+    }).then((val) => {
+      currentUserSubscription.unsubscribe();
+      return val;
+    });
   }
 }

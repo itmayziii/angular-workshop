@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { auth, User } from 'firebase';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import * as firebase from 'firebase';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +11,16 @@ import { Subject } from 'rxjs';
 export class UserService implements OnDestroy {
   private userUnsubscribeFn: firebase.Unsubscribe | undefined;
   private checkUserLoginUnsubscribeFn: firebase.Unsubscribe | undefined;
-  user: User | null = null;
-  userSubject: Subject<User | null> = new Subject<User|null>();
   private isLoginCheckFinished = false;
+  // Current user being observed.
+  // undefined = Firebase is not done determining if user is logged in or not.
+  // null = User is not logged in.
+  currentUserSubject = new BehaviorSubject<User|null|undefined>(undefined);
 
   constructor(private firebaseAuth: AngularFireAuth, private firebaseFunctions: AngularFireFunctions) {
     this.userUnsubscribeFn = this.firebaseAuth.auth.onAuthStateChanged(
       (user) => {
-        this.userSubject.next(user);
-        this.user = user;
+        this.currentUserSubject.next(user);
         this.isLoginCheckFinished = true;
       },
       (error) => console.warn(error)
@@ -35,25 +36,6 @@ export class UserService implements OnDestroy {
     }
   }
 
-  checkIfLoginFinished(): Promise<boolean> {
-    if (this.isLoginCheckFinished) { return Promise.resolve(true); }
-
-    return new Promise<boolean>((resolve, reject) => {
-       this.checkUserLoginUnsubscribeFn = this.firebaseAuth.auth.onAuthStateChanged(
-        (user) => {
-          this.isLoginCheckFinished = true;
-          resolve(true);
-
-          if (this.checkUserLoginUnsubscribeFn) {
-            this.checkUserLoginUnsubscribeFn();
-          }
-        },
-        (error) => reject(error)
-      );
-    });
-  }
-
-  // NOT PART OF THE WORKSHOP ;)
   updateUserWithCode(code: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const addCodeSubscription = this.firebaseFunctions.httpsCallable('addCode')({ code })
@@ -65,10 +47,6 @@ export class UserService implements OnDestroy {
           }
         );
     });
-  }
-
-  loginWithCredentials(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
   createUserWithCredentials(email: string, password: string, code: string): Promise<void> {
@@ -88,7 +66,20 @@ export class UserService implements OnDestroy {
       });
   }
 
+  loginWithCredentials() {
+    // TODO implement this method.
+    // return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
+  }
+
   loginWithGoogle(): Promise<firebase.auth.UserCredential> {
     return Promise.resolve(this.firebaseAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()));
   }
+}
+
+/**
+ * Type guard to know whether or not a user object is at least potentially a user object and not undefined which means we are still
+ * waiting to know if a user is logged in or not. https://www.typescriptlang.org/docs/handbook/advanced-types.html#user-defined-type-guards
+ */
+export function isPotentialUser(user: User|null|undefined): user is User|null {
+  return user !== undefined;
 }

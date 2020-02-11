@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { isPotentialUser, UserService } from '../../services/user.service';
 import * as firebase from 'firebase';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +18,11 @@ export class HomeComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.loggedInUser = this.userService.user;
-
-    this.userService.userSubject.subscribe(
+    this.userService.currentUserSubject
+      .pipe(
+        filter(isPotentialUser)
+      )
+      .subscribe(
       (user) => {
         this.loggedInUser = user;
       }

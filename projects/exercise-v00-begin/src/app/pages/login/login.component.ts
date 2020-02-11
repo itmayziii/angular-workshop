@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -43,20 +41,12 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(8)]]
   });
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(private formBuilder: FormBuilder) {
   }
 
-  loginWithCredentials(): Promise<boolean> {
-    if (!this.loginForm.valid) {
-      return Promise.resolve(false);
-    }
-
-    return this.userService.loginWithCredentials(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
-      .then(() => this.router.navigate(['home']));
+  loginWithCredentials() {
   }
 
-  loginWithGoogle(): Promise<boolean> {
-    return this.userService.loginWithGoogle()
-      .then(() => this.router.navigate(['home']));
+  loginWithGoogle() {
   }
 }

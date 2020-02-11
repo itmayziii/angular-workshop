@@ -7,7 +7,6 @@ import * as firebase from 'firebase';
     <aside>
       <nav>
         {{user?.displayName}}
-        Sidebar
       </nav>
     </aside>
   `,
