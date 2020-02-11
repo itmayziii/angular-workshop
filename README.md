@@ -1,27 +1,22 @@
-# AngularWorkshop
-
+# angular-workshop
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.1.
 
-## Development server
+This repository is part of a workshop presented by [Tommy May](https://twitter.com/iTMayzIII).
+The goal of the workshop is to teach Angular by building a real world application. Obviously the [Angular documentation](https://angular.io/docs)
+is fantastic and this workshop aims to supplement the documentation using real world examples.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Getting Started
+1. Install the Angular CLI (preferably globally) `npm install -g @angular/cli`.
+2. Clone project `git clone git@github.com:itmayziii/angular-workshop.git`
+3. Install dependencies `npm i`
 
-## Code scaffolding
+## Workshop Flow.
+There are 2 exercises located in the [projects directory](/projects) with the naming convention `exercise-v**-(begin|end|README)`.
+* The instructions for each exercise is in `exercise-v**-README.md`.
+* You should begin an exercise by making your updates in the `exercise-v**-begin` directory.
+* The `exercise-v**-end` directory is meant to serve as an example solution to the exercise problem. Obviously your encouraged to
+give the exercise a shot yourself before looking at a solution.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Each exercise directory is it's own standalone Angular project and you can start a dev environment for each one
+by running `ng serve --project exercise-v00-begin` or `ng serve --project exercise-v01-begin`. The final version of
+the project is called `final` and can be ran similarly via `ng serve --project final`. 
