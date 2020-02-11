@@ -10,8 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserService implements OnDestroy {
   private userUnsubscribeFn: firebase.Unsubscribe | undefined;
-  private checkUserLoginUnsubscribeFn: firebase.Unsubscribe | undefined;
-  private isLoginCheckFinished = false;
   // Current user being observed.
   // undefined = Firebase is not done determining if user is logged in or not.
   // null = User is not logged in.
@@ -21,7 +19,6 @@ export class UserService implements OnDestroy {
     this.userUnsubscribeFn = this.firebaseAuth.auth.onAuthStateChanged(
       (user) => {
         this.currentUserSubject.next(user);
-        this.isLoginCheckFinished = true;
       },
       (error) => console.warn(error)
     );
@@ -30,9 +27,6 @@ export class UserService implements OnDestroy {
   ngOnDestroy(): void {
     if (this.userUnsubscribeFn) {
       this.userUnsubscribeFn();
-    }
-    if (this.checkUserLoginUnsubscribeFn) {
-      this.checkUserLoginUnsubscribeFn();
     }
   }
 
