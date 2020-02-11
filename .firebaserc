@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular-workshop-4fb53": {
+      "hosting": {
+        "final": [
+          "angular-workshop-4fb53"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular-workshop-4fb53"
+  }
+}
