@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth, FirebaseError } from 'firebase/app';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
@@ -8,13 +7,16 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-signup',
   template: `
-    <div class='login-form'>
-      <label>
-        <div>Workshop Code</div>
-        <input type='text' [formControl]='code'/>
-      </label>
+    <div class='login-shell'>
+      <div class='form-field'>
+        <input type='text' [formControl]='code' class='form-field'/>
+        <label for='password'>Workshop Code</label>
+      </div>
+      <span class='error' *ngIf='code.invalid && ((credentialSignInAttempted || googleSignInAttempted) || code.touched)'>
+          Code is Required
+      </span>
       <form (ngSubmit)='signUpWithCredentials()' [formGroup]='signUpWithCredentialsForm'>
-        <h1>Login</h1>
+        <h1>Sign Up</h1>
         <div class='form-field'>
           <svg t='1580186443851' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='1262'
             width='20' height='20'>
@@ -25,6 +27,9 @@ import { Router } from '@angular/router';
           <input type='text' name='email' formControlName='email' class='form-field' placeholder=''>
           <label for='username'>Username</label>
         </div>
+        <span class='error' *ngIf='signUpWithCredentialsForm.get("email").invalid && (credentialSignInAttempted || signUpWithCredentialsForm.get("email").touched)'>
+          Invalid Email
+        </span>
         <div class='form-field'>
           <svg t='1580186496086' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='885' width='20'
             height='20'>
@@ -35,10 +40,14 @@ import { Router } from '@angular/router';
           <input type='password' name='password' formControlName='password' class='form-field' placeholder=''>
           <label for='password'>Password</label>
         </div>
-        <button type='submit' value='Login' class='btn'>Login</button>
+        <span class='error' *ngIf='signUpWithCredentialsForm.get("password").invalid && (credentialSignInAttempted || signUpWithCredentialsForm.get("password").touched)'>
+          Invalid Password
+        </span>
+        <button type='submit' value='Sign Up' class='btn'>Sign Up</button>
       </form>
-      <span>OR</span>
-      <img class='google-btn' (click)='signUpWithGoogle()' src='../../../assets/google-signin-button.png' alt='google sign-in button'/>
+      <div class='social-section'>
+        <img class='google-btn' (click)='signUpWithGoogle()' src='../../../assets/google-signin-button.png' alt='google sign-in button'/>
+      </div>
     </div>
   `,
   styleUrls: ['./sign-up.component.css']
@@ -49,12 +58,13 @@ export class SignUpComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]]
   });
-  submitted = false;
+  googleSignInAttempted = false;
+  credentialSignInAttempted = false;
 
   constructor(private firebaseAuth: AngularFireAuth, private formBuilder: FormBuilder, private userService: UserService, private router: Router) {}
 
   signUpWithGoogle() {
-    this.submitted = true;
+    this.googleSignInAttempted = true;
     if (this.code.invalid) {
       return;
     }
@@ -64,7 +74,7 @@ export class SignUpComponent {
   }
 
   signUpWithCredentials() {
-    this.submitted = true;
+    this.credentialSignInAttempted = true;
     if (this.code.invalid || this.signUpWithCredentialsForm.invalid) {
       return;
     }

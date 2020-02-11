@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   template: `
-    <div class='login-form'>
+    <div class='login-shell'>
       <form (ngSubmit)='loginWithCredentials()' [formGroup]='loginForm'>
         <h1>Login</h1>
         <div class='form-field'>
@@ -31,8 +31,9 @@ import { Router } from '@angular/router';
         </div>
         <button type='submit' value='Login' class='btn'>Login</button>
       </form>
-      <span>OR</span>
-      <img class='google-btn' (click)='loginWithGoogle()' src='../../../assets/google-signin-button.png' alt='google sign-in button'/>
+      <div class='social-section'>
+        <img class='google-btn' (click)='loginWithGoogle()' src='../../../assets/google-signin-button.png' alt='google sign-in button'/>
+      </div>
     </div>
   `,
   styleUrls: ['./login.component.css']
